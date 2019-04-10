@@ -2,11 +2,11 @@ const { Client } = require('pg');
 
 var User = {} 
 
-User.create = function(name, email, first_name, last_name, password, callback) {
+User.create = function(name, email, first_name, last_name, password, is_driver, callback) {
   const client = User.connection();
 
-  var text = "INSERT INTO User(name, email, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5)"
-  var values = [name, email, first_name, last_name, password];
+  var text = "INSERT INTO Users(name, email, first_name, last_name, password, is_driver) VALUES ($1, $2, $3, $4, $5, $6)"
+  var values = [name, email, first_name, last_name, password, is_driver];
   client.query(text, values, (err, results) => {
     if (err) {
       callback(null, err)
@@ -19,7 +19,7 @@ User.create = function(name, email, first_name, last_name, password, callback) {
 User.all = function(callback) {
   const client = User.connection(); 
 
-  var text = "SELECT * FROM User";
+  var text = "SELECT * FROM Users";
   client.query(text, function(err, results) {
     if (err) {
       callback(null, err); 

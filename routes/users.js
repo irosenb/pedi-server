@@ -16,6 +16,7 @@ router.post('/', function(req, res, next) {
   var email = req.body.email; 
   var first_name = req.body.first_name;
   var last_name = req.body.last_name; 
+  const saltRounds = 10 
 
   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
     if (err) {
@@ -26,7 +27,15 @@ router.post('/', function(req, res, next) {
     var password = hash;
     User.create(name, email, first_name, last_name, password, function(result, err) {
       if (result) {
-        res.send(200, result);
+        var data = {}
+
+        data["first_name"] = result["first_name"]
+        data["last_name"] = result["last_name"]
+        data["email"] = result["email"]
+
+        // jwtToken.sign
+
+        res.send(200, data);
       }
     }) 
   })
