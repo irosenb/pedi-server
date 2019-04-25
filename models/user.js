@@ -5,16 +5,16 @@ var User = {}
 User.create = function(email, first_name, last_name, password, is_driver, token, callback) {
   const client = User.connection();
 
-  var text = "INSERT INTO Users(email, first_name, last_name, password, is_driver, auth_token) VALUES ($1, $2, $3, $4, $5, $6)"
+  var text = "INSERT INTO Users(email, first_name, last_name, password, is_driver, auth_token) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *"
   var values = [email, first_name, last_name, password, is_driver, token];
-  client.query(text, values, (err, results) => {
+  client.query(text, values, function(err, results) {
     if (err) {
       console.log(err);
       callback(null, err);
     } else {
-      callback(results.rows, null);
+      callback(results.rows[0], null);
     }
-  })
+  });
 }
 
 User.all = function(callback) {
