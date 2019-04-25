@@ -9,7 +9,7 @@ router.post('/request', function (req, res, next) {
 
   if (!session_token) {
     console.log("no session token");
-    res.send(401, "Unauthorized");
+    res.status(401).send("Unauthorized");
     return;
   }
 
@@ -19,7 +19,6 @@ router.post('/request', function (req, res, next) {
     var destination_latitude = req.body.destination_latitude;
     var destination_longitude = req.body.destination_longitude;
     var created_at = new Date()
-
 
     var start = "POINT(" + start_latitude + " " + start_longitude + ")"
     var destination = "POINT(" + destination_latitude + " " + destination_longitude + ")"
