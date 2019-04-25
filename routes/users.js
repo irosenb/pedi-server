@@ -34,13 +34,16 @@ router.post('/', function(req, res, next) {
     User.create(email, first_name, last_name, password, is_driver, token, function(result, err) {
       if (result) {
         var data = {}
+        console.log(result);
 
         data["first_name"] = result["first_name"];
         data["last_name"] = result["last_name"];
         data["email"] = result["email"];
         data["auth_token"] = token;
-        data["is_driver"] = result["is_driver"];
-        res.send(200, data);
+        data["is_driver"] = false;
+        data["user_id"] = result["id"];
+
+        res.send(data);
         return;
       }
 
