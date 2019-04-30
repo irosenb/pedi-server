@@ -37,4 +37,20 @@ router.post('/request', function (req, res, next) {
   });
 })
 
+router.get('/price', function (req, res, next) {
+  var session_token = req.headers['x-session-token'];
+
+  if (!session_token) {
+    console.log("no session token");
+    res.status(401).send("Unauthorized");
+    return;
+  }
+
+  User.find_by_session_token(session_token, function(user) {
+    var price = Ride.set_pricing(req.query['eta'], req.query['distance']);
+    console.log(price);
+    res.send({"price": price});
+  })
+})
+
 module.exports = router;
