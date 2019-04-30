@@ -14,6 +14,7 @@ User.create = function(email, first_name, last_name, password, is_driver, token,
     } else {
       callback(results.rows[0], null);
     }
+    client.end();
   });
 }
 
@@ -27,6 +28,7 @@ User.all = function(callback) {
     } else {
       callback(results.rows, null);
     }
+    client.end();
   })
 }
 
@@ -43,6 +45,7 @@ User.find_by_session_token = function(token, callback) {
     } else {
       callback(res.rows[0]);
     }
+    client.end();
   })
 
 }

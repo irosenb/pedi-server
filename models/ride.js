@@ -29,6 +29,7 @@ Ride.create = function(start, destination, created_at, user_id, eta, distance, c
     } else {
       callback(results.rows[0], null);
     }
+    client.end();
   })
 
 }
@@ -45,6 +46,7 @@ Ride.set_driver = function(id, driver_id, callback) {
     } else {
       callback(null, res);
     }
+    client.end();
   })
 }
 
@@ -60,6 +62,7 @@ Ride.find_by_id = function(id, callback) {
     } else {
       callback(null, res.rows[0]);
     }
+    client.end();
   })
 }
 
@@ -76,6 +79,7 @@ Ride.update_status = function(id, status, callback) {
     }
 
 
+    client.end();
   })
 }
 
@@ -92,6 +96,7 @@ Ride.pickup = function (id, callback) {
     } else {
       callback(null, results.rows[0]);
     }
+    client.end();
   })
 }
 

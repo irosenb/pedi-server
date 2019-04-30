@@ -28,6 +28,7 @@ Driver.create = function(email, first_name, last_name, password, token, callback
 
           callback(object, null);
         }
+        client.end();
       })
 
     }
@@ -44,6 +45,7 @@ Driver.all = function(callback) {
     } else {
       callback(results.rows, null);
     }
+    client.end();
   })
 }
 
@@ -60,6 +62,7 @@ Driver.find_by_session_token = function(token, callback) {
     } else {
       callback(res.rows[0], null);
     }
+    client.end();
   })
 
 }
