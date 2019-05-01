@@ -21,11 +21,11 @@ Ride.connection = function() {
   return client
 }
 
-Ride.create = function(start, destination, created_at, user_id, eta, distance, price, callback) {
+Ride.create = function(start, destination, created_at, user_id, eta, distance, price, address, callback) {
   const client = Ride.connection();
 
-  var text = "INSERT INTO Rides(start, destination, created_at, user_id, status, estimated_time, distance, price) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *"
-  var values = [start, destination, created_at, user_id, Ride.status.REQUEST, eta, distance, price];
+  var text = "INSERT INTO Rides(start, destination, created_at, user_id, status, estimated_time, distance, price, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *"
+  var values = [start, destination, created_at, user_id, Ride.status.REQUEST, eta, distance, price, address];
   client.query(text, values, (err, results) => {
     if (err) {
       console.log(err);
