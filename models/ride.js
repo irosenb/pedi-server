@@ -15,7 +15,7 @@ Ride.perMileCost = 5.0;
 Ride.perMinuteCost = 1.5;
 
 Ride.connection = function() {
-  const client = new Client();
+  const client = new Client({ connectionString: process.env.DATABASE_URL })
   client.connect();
 
   return client

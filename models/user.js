@@ -51,7 +51,7 @@ User.find_by_session_token = function(token, callback) {
 }
 
 User.connection = function() {
-  const client = new Client();
+  const client = new Client({ connectionString: process.env.DATABASE_URL })
   client.connect();
 
   return client

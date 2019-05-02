@@ -68,7 +68,7 @@ Driver.find_by_session_token = function(token, callback) {
 }
 
 Driver.connection = function() {
-  const client = new Client();
+  const client = new Client({ connectionString: process.env.DATABASE_URL })
   client.connect();
 
   return client
