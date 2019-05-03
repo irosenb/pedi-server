@@ -31,8 +31,9 @@ sockets.init = function(server) {
       var eta = data['estimated_time'];
       var distance = data['distance'];
       var price = data['price'];
+      var address = data['address'];
 
-      Ride.create(start, destination, created_at, user_id, eta, distance, price, function (result, err) {
+      Ride.create(start, destination, created_at, user_id, eta, distance, price, address, function (result, err) {
         if (result) {
           var request = {};
 
