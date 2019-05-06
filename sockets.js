@@ -31,9 +31,9 @@ sockets.init = function(server) {
       var eta = data['estimated_time'];
       var distance = data['distance'];
       var price = data['price'];
-      var address = data['address'];
-
-      Ride.create(start, destination, created_at, user_id, eta, distance, price, address, function (result, err) {
+      var destination_address = data['destination_address'];
+      var pickup_address = data['pickup_address'];
+      Ride.create(start, destination, created_at, user_id, eta, distance, price, destination_address, pickup_address, function (result, err) {
         if (result) {
           var request = {};
 
@@ -42,7 +42,9 @@ sockets.init = function(server) {
           request['destination_latitude'] = data['destination_latitude'];
           request['destination_longitude'] = data['destination_longitude'];
           request['ride_id'] = result['id'];
-
+          request['pickup_address'] = pickup_address;
+          request['destination_address'] = destination_address;
+          
           io.emit('rideRequest', request);
         }
       });
