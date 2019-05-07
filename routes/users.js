@@ -63,7 +63,8 @@ router.post('/credit_card', function (req, res, next) {
 
   User.find_by_session_token(session_token, function(user) {
     var token = req.body.token;
-
+    console.log(user);
+    
     User.set_customer_and_credit_card(token, user, function(result, err) {
       if (result) {
         res.status(200).send(result)
