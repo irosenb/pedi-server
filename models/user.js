@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+const stripe = require("stripe")("sk_test_H1SU1ad9ZkwOVyfX1LRWSKEi");
 
 var User = {}
 
@@ -48,6 +49,33 @@ User.find_by_session_token = function(token, callback) {
     client.end();
   })
 
+}
+
+User.set_customer_and_credit_card = function (token, user, callback) {
+  var full_name = user.first_name + " " + user.last_name
+
+  stripe.customers.create({
+    name: full_name,
+    email: user.email,
+    source: token
+  }, function(err, customer) {
+    if (err) {
+      callback(null, err)
+    }
+    const client = User.connection();
+    var text = "UPDATE Users SET customer_id=($1) WHERE id=($2) RETURNING *";
+    var values = [customer.id, user.id];
+
+    client.query(query, function(err, res) {
+      if (err) {
+        console.log(err.stack);
+        callback(null, err);
+      } else {
+        callback(null, res.rows[0]);
+      }
+      client.end();
+    })
+  });
 }
 
 User.connection = function() {

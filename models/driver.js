@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+const stripe = require('stripe')('sk_test_fCIxlgiUQ5VYLoWTkNk2EZ8P00dzllYiO0');
 
 var Driver = {}
 
@@ -12,9 +13,16 @@ Driver.create = function(email, first_name, last_name, password, token, callback
       console.log(err);
       callback(null, err);
     } else {
+      const account = stripe.accounts.create({
+        type: "custom",
+        country: "US",
+        email: email,
+        requested_capabilities: ['platform_payments']
+      });
+      
       var user_id = results.rows[0]["id"]
-      var query = "INSERT INTO Drivers(user_id) VALUES ($1) RETURNING *"
-      var val = [user_id]
+      var query = "INSERT INTO Drivers(user_id, account_id) VALUES ($1, $2) RETURNING *"
+      var val = [user_id, account.id]
 
       client.query(query, val, function (err, res) {
         if (err) {

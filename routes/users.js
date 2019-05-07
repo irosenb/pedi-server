@@ -52,4 +52,24 @@ router.post('/', function(req, res, next) {
   })
 })
 
+router.post('/credit_card', function (req, res, next) {
+  var session_token = req.headers['x-session-token'];
+
+  if (!session_token) {
+    console.log("no session token");
+    res.status(401).send("Unauthorized");
+    return;
+  }
+
+  User.find_by_session_token(session_token, function(user) {
+    var token = req.body.token;
+
+    User.set_customer_and_credit_card(token, user, function(result, err) {
+      if (result) {
+        res.status(200).send(result)
+      }
+    })
+  })
+})
+
 module.exports = router;
