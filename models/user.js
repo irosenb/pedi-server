@@ -66,7 +66,7 @@ User.set_customer_and_credit_card = function (token, user, callback) {
     var text = "UPDATE Users SET customer_id=($1) WHERE id=($2) RETURNING *";
     var values = [customer.id, user['id']];
 
-    client.query(query, function(err, res) {
+    client.query(text, values, function(err, res) {
       if (err) {
         console.log(err.stack);
         callback(null, err);
