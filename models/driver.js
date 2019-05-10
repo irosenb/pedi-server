@@ -17,9 +17,14 @@ Driver.create = function(email, first_name, last_name, password, token, callback
         type: "custom",
         country: "US",
         email: email,
+        business_type: "individual",
+        individual: {
+          first_name: first_name,
+          last_name: last_name
+        }
         requested_capabilities: ['platform_payments']
       });
-      
+
       var user_id = results.rows[0]["id"]
       var query = "INSERT INTO Drivers(user_id, account_id) VALUES ($1, $2) RETURNING *"
       var val = [user_id, account.id]
@@ -73,6 +78,41 @@ Driver.find_by_session_token = function(token, callback) {
     client.end();
   })
 
+}
+
+Driver.set_stripe = function(driver_id, ssn, day, month, year, remoteAddress, callback) {
+  const client = Driver.connection();
+
+  const query = {
+    text: "SELECT * FROM Drivers WHERE id = $1",
+    values: [driver_id]
+  }
+  client.query(query, function(err, res) {
+    if (err) {
+      console.log(err.stack);
+      callback(null, err);
+    } else {
+      var driver = res.rows[0];
+      const updated_account = stripe.accounts.update(driver.account_id, {
+        individual: {
+          ssn_last_4: ssn,
+          dob: {
+            day: day,
+            month: month,
+            year: year,
+          }
+        },
+        tos_acceptance: {
+          date: Math.floor(Date.now() / 1000),
+          ip: remoteAddress
+        }
+      })
+
+      console.log(updated_account);
+      callback(res.rows[0], null);
+    }
+    client.end();
+  })
 }
 
 Driver.connection = function() {

@@ -48,4 +48,26 @@ router.put('/toggle', function (req, res, next) {
   res.send({});
 })
 
+router.put('/stripe', function (req, res, next) {
+  var session_token = req.headers['x-session-token'];
+
+  if (!session_token) {
+    console.log("no session token");
+    res.status(401).send("Unauthorized");
+    return;
+  }
+
+  User.find_by_session_token(session_token, function(user) {
+    var day = req.body.day;
+    var month = req.body.month;
+    var year = req.body.year;
+    var ssn = req.body.ssn;
+    Driver.set_stripe(req.body.driver_id, ssn, day, month, year, req.connection.remoteAddress, function(err, result) {
+      if (result) {
+        res.status(200).send(result)
+      }
+    })
+  })
+})
+
 module.exports = router;
