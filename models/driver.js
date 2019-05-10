@@ -107,12 +107,12 @@ Driver.set_stripe = function(driver_id, ssn, day, month, year, remoteAddress, ca
           date: Math.floor(Date.now() / 1000),
           ip: remoteAddress
         }
-      })
-
-      console.log(updated_account);
-      callback(res.rows[0], null);
+      }, function (err, account) {
+        console.log(account);
+        callback(res.rows[0], null);
+        client.end();
+      });
     }
-    client.end();
   })
 }
 
