@@ -23,29 +23,28 @@ Driver.create = function(email, first_name, last_name, password, token, callback
           last_name: last_name
         },
         requested_capabilities: ['platform_payments']
+      }, function (err, account) {
+        console.log(account);
+
+        var user_id = results.rows[0]["id"]
+        var query = "INSERT INTO Drivers(user_id, account_id) VALUES ($1, $2) RETURNING *"
+        var val = [user_id, account['id']]
+
+        client.query(query, val, function (err, res) {
+          if (err) {
+            console.error(err);
+            callback(null, err);
+          } else {
+            var object = results.rows[0]
+
+            object["driver_id"] = res.rows[0]["id"]
+            object["is_driver"] = true
+
+            callback(object, null);
+          }
+          client.end();
+        });
       });
-
-      console.log(account); 
-
-      var user_id = results.rows[0]["id"]
-      var query = "INSERT INTO Drivers(user_id, account_id) VALUES ($1, $2) RETURNING *"
-      var val = [user_id, account['id']]
-
-      client.query(query, val, function (err, res) {
-        if (err) {
-          console.error(err);
-          callback(null, err);
-        } else {
-          var object = results.rows[0]
-
-          object["driver_id"] = res.rows[0]["id"]
-          object["is_driver"] = true
-
-          callback(object, null);
-        }
-        client.end();
-      })
-
     }
   });
 }
