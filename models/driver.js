@@ -21,7 +21,7 @@ Driver.create = function(email, first_name, last_name, password, token, callback
         individual: {
           first_name: first_name,
           last_name: last_name
-        }
+        },
         requested_capabilities: ['platform_payments']
       });
 
