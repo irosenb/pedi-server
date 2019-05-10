@@ -25,9 +25,11 @@ Driver.create = function(email, first_name, last_name, password, token, callback
         requested_capabilities: ['platform_payments']
       });
 
+      console.log(account); 
+
       var user_id = results.rows[0]["id"]
       var query = "INSERT INTO Drivers(user_id, account_id) VALUES ($1, $2) RETURNING *"
-      var val = [user_id, account.id]
+      var val = [user_id, account['id']]
 
       client.query(query, val, function (err, res) {
         if (err) {
