@@ -22,6 +22,9 @@ Driver.create = function(email, first_name, last_name, password, token, callback
           first_name: first_name,
           last_name: last_name
         },
+        business_profile: {
+          product_description: "A pedicab driver"
+        },
         requested_capabilities: ['platform_payments']
       }, function (err, account) {
         console.log(account);
