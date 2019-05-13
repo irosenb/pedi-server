@@ -81,7 +81,7 @@ Driver.find_by_session_token = function(token, callback) {
 
 }
 
-Driver.set_stripe = function(driver_id, ssn, day, month, year, remoteAddress, callback) {
+Driver.set_stripe = function(driver_id, ssn, day, month, year, routing, account, remoteAddress, callback) {
   const client = Driver.connection();
 
   const query = {
@@ -102,6 +102,13 @@ Driver.set_stripe = function(driver_id, ssn, day, month, year, remoteAddress, ca
             month: month,
             year: year,
           }
+        },
+        external_account: {
+          object: "bank_account",
+          country: "US",
+          currency: "usd",
+          routing_number: routing,
+          account_number: account
         },
         tos_acceptance: {
           date: Math.floor(Date.now() / 1000),

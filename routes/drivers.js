@@ -62,7 +62,10 @@ router.put('/stripe', function (req, res, next) {
     var month = req.body.month;
     var year = req.body.year;
     var ssn = req.body.ssn;
-    Driver.set_stripe(req.body.driver_id, ssn, day, month, year, req.connection.remoteAddress, function(err, result) {
+    var routing_number = req.body.routing_number;
+    var account_number = req.body.account_number;
+
+    Driver.set_stripe(req.body.driver_id, ssn, day, month, year, routing_number, account_number, req.connection.remoteAddress, function(err, result) {
       if (result) {
         res.status(200).send(result)
       }
