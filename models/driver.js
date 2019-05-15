@@ -118,8 +118,14 @@ Driver.set_stripe = function(driver_id, ssn, day, month, year, routing, account,
           ip: remoteAddress
         }
       }, function (err, account) {
+        if (err) {
+          console.log(err);
+          callback(null, err);
+          return;
+        }
+
         console.log(account);
-        callback(res.rows[0], null);
+        callback(account, null);
         client.end();
       });
     }
