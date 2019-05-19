@@ -44,7 +44,7 @@ sockets.init = function(server) {
           request['ride_id'] = result['id'];
           request['pickup_address'] = pickup_address;
           request['destination_address'] = destination_address;
-          
+
           io.emit('rideRequest', request);
         }
       });
@@ -95,8 +95,18 @@ sockets.init = function(server) {
     })
 
     socket.on('dropOff', function (data) {
-      Ride.update_status(data['ride_id'], Ride.status.DROPOFF, function (err, results) {
-        io.emit('dropOff', data);
+      Ride.update_status(data['ride_id'], Ride.status.DROPOFF, function (err, result) {
+        var driver_id = result['driver_id'];
+        var user_id = result['user_id'];
+
+        User.find(user_id, function (user, err) {
+          Driver.find(driver_id, function (driver, err) {
+            Ride.charge(result['price'] * 100, result['id'], user['customer_id'], driver['account_id'], function (err, result) {
+              io.emit('dropOff', data);
+            })
+          })
+        })
+
       });
     });
   });

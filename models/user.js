@@ -51,6 +51,24 @@ User.find_by_session_token = function(token, callback) {
 
 }
 
+User.find = function (id, callback) {
+  const client = User.connection();
+  const query = {
+    text: "SELECT * FROM Users WHERE id = $1",
+    values: [id]
+  }
+  client.query(query, function(err, res) {
+    if (err) {
+      console.log(err.stack);
+      callback(null, err);
+    } else {
+      callback(res.rows[0], null);
+    }
+    client.end();
+  })
+
+}
+
 User.set_customer_and_credit_card = function (token, user, callback) {
   var full_name = user['first_name'] + " " + user['last_name']
 

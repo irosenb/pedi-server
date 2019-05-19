@@ -52,6 +52,24 @@ Driver.create = function(email, first_name, last_name, password, token, callback
   });
 }
 
+Driver.find = function (id, callback) {
+  const client = Driver.connection();
+
+  const query = {
+    text: "SELECT * FROM Drivers WHERE id = $1",
+    values: [id]
+  }
+
+  client.query(query, function(err, results) {
+    if (err) {
+      callback(null, err);
+    } else {
+      callback(results.rows[0], null);
+    }
+    client.end();
+  })
+}
+
 Driver.all = function(callback) {
   const client = Driver.connection();
 
