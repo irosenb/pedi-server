@@ -37,12 +37,14 @@ Ride.create = function(start, destination, created_at, user_id, eta, distance, p
   })
 }
 
-Ride.charge = function(price, id, customer_id, account_id, callback) {
+Ride.charge = function(price, customer_id, account_id, callback) {
   stripe.charges.create({
     amount: price,
     currency: "usd",
     source: customer_id,
     on_behalf_of: account_id
+  }, function(err, charge) {
+    callback(err, charge);
   })
 }
 

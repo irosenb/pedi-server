@@ -1,6 +1,7 @@
 var sockets = {}
 var Ride = require('./models/ride.js');
 var User = require('./models/user.js');
+var Driver = require('./models/driver.js');
 
 sockets.init = function(server) {
   var io = require('socket.io').listen(server);
@@ -101,7 +102,8 @@ sockets.init = function(server) {
 
         User.find(user_id, function (user, err) {
           Driver.find(driver_id, function (driver, err) {
-            Ride.charge(result['price'] * 100, result['id'], user['customer_id'], driver['account_id'], function (err, result) {
+            Ride.charge(result['price'] * 100, user['customer_id'], driver['account_id'], function (err, charge) {
+              console.log(charge);
               io.emit('dropOff', data);
             })
           })
