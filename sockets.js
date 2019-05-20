@@ -104,7 +104,7 @@ sockets.init = function(server) {
           Driver.find(driver_id, function (driver, err) {
             Ride.charge(result['price'] * 100, user['customer_id'], driver['account_id'], function (err, charge) {
               if (err) {
-                console.log(error);
+                console.log(err);
               }
               console.log(charge);
               io.emit('dropOff', data);
