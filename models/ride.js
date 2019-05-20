@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+const stripe = require('stripe')('sk_test_fCIxlgiUQ5VYLoWTkNk2EZ8P00dzllYiO0');
 
 var Ride = {};
 
