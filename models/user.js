@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const stripe = require("stripe")("sk_test_H1SU1ad9ZkwOVyfX1LRWSKEi");
+const stripe = require("stripe")("sk_test_fCIxlgiUQ5VYLoWTkNk2EZ8P00dzllYiO0");
 
 var User = {}
 
