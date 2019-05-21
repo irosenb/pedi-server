@@ -71,7 +71,7 @@ User.find = function (id, callback) {
 
 User.set_customer_and_credit_card = function (token, user, callback) {
   var full_name = user['first_name'] + " " + user['last_name']
-
+  console.log("Credit card user: " + user);
   stripe.customers.create({
     name: full_name,
     email: user['email'],
