@@ -43,7 +43,9 @@ Ride.charge = function(price, customer_id, account_id, callback) {
     amount: price,
     currency: "usd",
     customer: customer_id,
-    on_behalf_of: account_id
+    transfer_data: {
+      destination: account_id
+    }
   }, function(err, charge) {
     callback(err, charge);
   })
