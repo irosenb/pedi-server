@@ -39,22 +39,20 @@ Ride.create = function(start, destination, created_at, user_id, eta, distance, p
 }
 
 Ride.charge = function(price, customer_id, account_id, callback) {
-  stripe.tokens.create({
+  stripe.charges.create({
+    amount: price,
+    currency: "usd",
     customer: customer_id,
-  }, {
-    stripe_account: account_id
-  }).then(function (token) {
-    stripe.charges.create({
+  }, function(err, charge) {
+    stripe.transfers.create({
       amount: price,
       currency: "usd",
-      source: token.id,
-    }, {
-      stripe_account: account_id
-    }, function(err, charge) {
-      callback(err, charge);
-    })
-  })
-
+      source_transaction: charge.id,
+      destination: account_id
+    }, function (err, transfer) {
+      callback(err, transfer);
+    });
+  });
 }
 
 Ride.set_pricing = function (eta, distance) {
