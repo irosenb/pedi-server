@@ -71,14 +71,14 @@ User.find = function (id, callback) {
 
 User.set_customer_and_credit_card = function (token, user, callback) {
   var full_name = user['first_name'] + " " + user['last_name']
-  console.log("Credit card user: " + user);
+  console.log(full_name);
   stripe.customers.create({
     name: full_name,
     email: user['email'],
     source: token
   }, function(err, customer) {
     if (err) {
-      callback(null, err)
+      callback(err, null)
     }
     const client = User.connection();
     var text = "UPDATE Users SET customer_id=($1) WHERE id=($2) RETURNING *";
@@ -87,7 +87,7 @@ User.set_customer_and_credit_card = function (token, user, callback) {
     client.query(text, values, function(err, res) {
       if (err) {
         console.log(err.stack);
-        callback(null, err);
+        callback(err, null);
       } else {
         callback(null, res.rows[0]);
       }
