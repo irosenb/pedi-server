@@ -44,6 +44,9 @@ Ride.charge = function(price, customer_id, account_id, callback) {
     currency: "usd",
     customer: customer_id,
   }, function(err, charge) {
+    if (err) {
+      console.log(err); 
+    }
     stripe.transfers.create({
       amount: price,
       currency: "usd",
