@@ -47,7 +47,7 @@ Ride.charge = function(price, customer_id, account_id, callback) {
     stripe.transfers.create({
       amount: price,
       currency: "usd",
-      source_transaction: charge.id,
+      source_transaction: charge['id'],
       destination: account_id
     }, function (err, transfer) {
       callback(err, transfer);
