@@ -80,7 +80,8 @@ User.set_customer_and_credit_card = function (token, user, callback) {
     source: token
   }, function(err, customer) {
     if (err) {
-      callback(err, null)
+      callback(err, null);
+      return;
     }
     const client = User.connection();
     var text = "UPDATE Users SET customer_id=($1) WHERE id=($2) RETURNING *";

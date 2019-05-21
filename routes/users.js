@@ -68,6 +68,8 @@ router.post('/credit_card', function (req, res, next) {
     User.set_customer_and_credit_card(token, user, function(err, result) {
       if (result) {
         res.status(200).send(result)
+      } else {
+        console.log(err);
       }
     })
   })
