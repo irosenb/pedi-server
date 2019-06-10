@@ -45,7 +45,8 @@ sockets.init = function(server) {
           request['ride_id'] = result['id'];
           request['pickup_address'] = pickup_address;
           request['destination_address'] = destination_address;
-
+          request['first_name'] = data['first_name'];
+          
           io.emit('rideRequest', request);
         }
       });
@@ -79,6 +80,10 @@ sockets.init = function(server) {
     socket.on('rideLocation', function (data) {
       io.emit('rideLocation', data);
     });
+
+    socket.on('cancelRide', function(data) {
+      io.emit('cancelRide', data);
+    })
 
     socket.on('arrived', function (data) {
       console.log(data)
